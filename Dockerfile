@@ -1,11 +1,11 @@
-# Stage 1: Build the App using Maven
-FROM maven:3.8.5-openjdk-17 AS build
+# Stage 1: Build using a newer Maven/Java version
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Stage 2: Run the App using a lightweight Java Runtime
-FROM eclipse-temurin:17-jdk-alpine
+# Stage 2: Run using Java 21
+FROM eclipse-temurin:21-jdk-alpine
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","app.jar"]
